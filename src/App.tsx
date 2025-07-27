@@ -6,7 +6,11 @@ function App() {
     <div>
       <Navbar />
 
-      <Outlet />
+      <section className="text-gray-600 body-font overflow-hidden">
+        <div className="container px-5 pt-14 pb-24 mx-auto">
+          <Outlet />
+        </div>
+      </section>
     </div>
   );
 }

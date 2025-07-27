@@ -1,7 +1,7 @@
 import App from "@/App";
 import BookForm from "@/pages/BookForm";
-import Books from "@/pages/Books";
 import BorrowSummary from "@/pages/BorrowSummary";
+import Home from "@/pages/Home";
 import { createBrowserRouter } from "react-router";
 
 const router = createBrowserRouter([
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Books,
+        Component: Home,
       },
       {
         path: "/create-book",
