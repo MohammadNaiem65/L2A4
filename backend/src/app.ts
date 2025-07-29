@@ -1,9 +1,15 @@
+import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import bookRouter from "./app/controllers/book.controller";
 import borrowRouter from "./app/controllers/borrow.controller";
 
 const app: Application = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
