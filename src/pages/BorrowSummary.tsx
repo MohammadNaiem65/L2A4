@@ -12,12 +12,9 @@ export default function BorrowSummary() {
   if (isLoading) {
     content = (
       <>
-        <BorrowedCardLoader />
-        <BorrowedCardLoader />
-        <BorrowedCardLoader />
-        <BorrowedCardLoader />
-        <BorrowedCardLoader />
-        <BorrowedCardLoader />
+        {Array.from({ length: 5 }, (_, index) => (
+          <BorrowedCardLoader key={index} />
+        ))}
       </>
     );
   } else if (isError) {
@@ -27,8 +24,8 @@ export default function BorrowSummary() {
   } else if (isSuccess && data?.data?.length > 0) {
     content = (
       <>
-        {data?.data?.map((book: BorrowedBook) => (
-          <BorrowCard key={book._id} data={book} />
+        {data?.data?.map((book: BorrowedBook, index: number) => (
+          <BorrowCard key={index} data={book} />
         ))}
       </>
     );
