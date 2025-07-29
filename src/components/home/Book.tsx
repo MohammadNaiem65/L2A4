@@ -1,64 +1,69 @@
-export default function Book() {
+import type { IBook } from "@/interfaces/book.interface";
+import { cn } from "@/lib/utils";
+import { FaBook } from "react-icons/fa";
+
+export default function Book({ data }: { data: IBook }) {
+  const { author, available, copies, genre, isbn, title, description } = data;
+
+  console.log("🚀 ~ Book ~ data:", data);
   return (
     <div className="p-12 md:w-1/2 flex flex-col items-start">
       {/* Availability status */}
-      <span className="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">
-        CATEGORY
+      <span
+        className={cn(
+          "inline-block py-1 px-2 rounded text-xs font-medium tracking-widest",
+          available ? "bg-indigo-50 text-indigo-500" : "bg-red-50 text-red-500"
+        )}
+      >
+        {available ? "Available" : "Stock Out"}
       </span>
 
-      <h2 className="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">
-        Roof party normcore before they sold out, cornhole vape
+      <h2 className="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4">
+        {title}
       </h2>
-      <p className="leading-relaxed mb-8">
-        Live-edge letterpress cliche, salvia fanny pack humblebrag narwhal
-        portland. VHS man braid palo santo hoodie brunch trust fund. Bitters
-        hashtag waistcoat fashion axe chia unicorn. Plaid fixie chambray 90's,
-        slow-carb etsy tumeric. Cray pug you probably haven't heard of them
-        hexagon kickstarter craft beer pork chic.
+
+      <p className="inline-flex items-center mt-1">
+        <span className="flex-grow flex flex-col">
+          <span className="title-font font-medium text-gray-900">{author}</span>
+          <span className="text-gray-400 text-xs tracking-widest mt-0.5">
+            ISBN: {isbn}
+          </span>
+        </span>
       </p>
 
-      <div className="w-full flex items-center justify-between border-t-2 border-gray-100 pt-5">
-        <a className="inline-flex items-center">
-          <span className="flex-grow flex flex-col">
-            <span className="title-font font-medium text-gray-900">
-              Holden Caulfield
-            </span>
-            <span className="text-gray-400 text-xs tracking-widest mt-0.5">
-              UI DEVELOPER
-            </span>
-          </span>
-        </a>
+      <p className="leading-relaxed mt-4 mb-8">{description}</p>
 
+      <div className="w-full flex items-center justify-between border-t-2 border-gray-100 pt-5">
         <div className="flex items-center flex-wrap ">
           <span className="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-            <svg
-              className="w-4 h-4 mr-1"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-            1.2K
+            {genre.replace("_", " ")}
           </span>
-          <span className="text-gray-400 inline-flex items-center leading-none text-sm">
-            <svg
-              className="w-4 h-4 mr-1"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-            </svg>
-            6
+          <span className="text-gray-400 inline-flex items-center leading-none text-sm gap-x-1">
+            <FaBook />
+            {copies}
           </span>
+        </div>
+
+        <div className="space-x-3">
+          <button
+            type="button"
+            disabled={!available}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 cursor-pointer dark:bg-blue-600 disabled:bg-blue-800 focus:outline-none"
+          >
+            Borrow
+          </button>
+          <button
+            type="button"
+            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-red-800"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>

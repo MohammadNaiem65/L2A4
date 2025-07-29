@@ -1,4 +1,4 @@
-export const Genre = {
+export const IGenre = {
   FICTION: "FICTION",
   NON_FICTION: "NON_FICTION",
   SCIENCE: "SCIENCE",
@@ -7,13 +7,13 @@ export const Genre = {
   FANTASY: "FANTASY",
 } as const;
 
-export type Genre = (typeof Genre)[keyof typeof Genre];
+export type IGenre = (typeof IGenre)[keyof typeof IGenre];
 
-export interface Book {
+export interface IBook {
   _id: string;
   title: string;
   author: string;
-  genre: Genre;
+  genre: IGenre;
   isbn: string;
   description?: string;
   copies: number;
