@@ -1,3 +1,4 @@
+import { postBookAction } from "@/actions/bookActions";
 import App from "@/App";
 import BookForm from "@/pages/BookForm";
 import BorrowSummary from "@/pages/BorrowSummary";
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       {
         path: "/create-book",
         Component: BookForm,
+        action: postBookAction,
       },
       {
         path: "/edit-book/:bookId",
