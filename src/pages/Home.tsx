@@ -3,9 +3,16 @@ import Header from "@/components/home/header/Header";
 import BookLoader from "@/components/loaders/BookLoader";
 import { useGetBooksQuery } from "@/features/api/apiSlice";
 import type { IBook } from "@/interfaces/book.interface";
+import { useParams } from "react-router";
 
 export default function Home() {
-  const { data, isLoading, isSuccess, isError } = useGetBooksQuery({});
+  const { genre, sortby, page } = useParams();
+
+  const { data, isLoading, isSuccess, isError } = useGetBooksQuery({
+    genre,
+    sortby,
+    page,
+  });
 
   // Decide what to render
   let content;

@@ -8,7 +8,7 @@ interface FormFieldProps {
   label?: string;
   htmlFor?: string;
   error?: {
-    message: string;
+    message: string | undefined;
   };
 }
 
