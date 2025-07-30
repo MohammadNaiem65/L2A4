@@ -13,7 +13,7 @@ bookRouter.get("/", async (req: Request, res: Response) => {
   const _page = parseInt(page as string);
   const _limit = parseInt(limit as string);
 
-  let pipeline: PipelineStage[] = [];
+  const pipeline: PipelineStage[] = [];
 
   if (filter) {
     pipeline.push({
@@ -32,6 +32,10 @@ bookRouter.get("/", async (req: Request, res: Response) => {
 
   pipeline.push({
     $skip: (_page >= 1 ? _page - 1 : 0) * _limit,
+  });
+
+  pipeline.push({
+    $limit: _limit,
   });
 
   try {
