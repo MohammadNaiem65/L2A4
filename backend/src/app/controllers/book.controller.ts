@@ -13,37 +13,46 @@ bookRouter.get("/", async (req: Request, res: Response) => {
   const _page = parseInt(page as string);
   const _limit = parseInt(limit as string);
 
-  const pipeline: PipelineStage[] = [];
+  const mainPipeline: PipelineStage[] = [];
+  const paginationStages: PipelineStage[] = [];
 
   if (filter) {
-    pipeline.push({
+    mainPipeline.push({
       $match: {
         genre: filter,
       },
     });
   }
   if (sortby) {
-    pipeline.push({
+    mainPipeline.push({
       $sort: {
         [sortby as string]: sort === "desc" ? -1 : 1,
       },
     });
   }
 
-  pipeline.push({
+  paginationStages.push({
     $skip: (_page >= 1 ? _page - 1 : 0) * _limit,
   });
 
-  pipeline.push({
+  paginationStages.push({
     $limit: _limit,
   });
 
   try {
-    const books = await Book.aggregate(pipeline);
+    const books = await Book.aggregate([...mainPipeline, ...paginationStages]);
+    const total = await Book.aggregate([...mainPipeline, { $count: "count" }]);
+
+    const meta = {
+      total: total.length > 0 ? total[0].count : 0,
+      page: _page >= 1 ? _page : 1,
+      limit: _limit,
+    };
 
     return res.status(200).json({
       success: true,
       message: "Books retrieved successfully",
+      meta,
       data: books,
     });
   } catch (error) {
