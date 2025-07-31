@@ -1,9 +1,11 @@
+import { AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useDeleteBookMutation } from '@/features/api/apiSlice';
 import type { IBook } from '@/interfaces/book.interface';
 import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { FaBook } from 'react-icons/fa';
 import { Link } from 'react-router';
-import { AlertDialogTrigger } from '../ui/alert-dialog';
 
 export default function Book({
     data,
@@ -15,11 +17,17 @@ export default function Book({
     const { _id, author, available, copies, genre, isbn, title, description } =
         data;
 
-    const [deleteBook] = useDeleteBookMutation();
+    const [deleteBook, { isSuccess }] = useDeleteBookMutation();
 
     const onDeleteBook = () => {
         deleteBook(_id);
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success('Book deleted successfully');
+        }
+    }, [isSuccess]);
 
     return (
         <div className='p-12 md:w-1/2 flex flex-col items-start'>
