@@ -30,6 +30,8 @@ const apiSlice = createApi({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(
           apiSlice.util.updateQueryData("getBooks", {}, (draft) => {
+            draft.meta.total++;
+
             draft.data.pop();
             draft.data.unshift({
               ...arg,
@@ -42,27 +44,22 @@ const apiSlice = createApi({
           const data = await queryFulfilled;
 
           dispatch(
-            apiSlice.util.updateQueryData(
-              "getBooks",
-              { genre: "NON_FICTION", sortby: "updatedAt", page: "1" },
-              (draft) => {
-                const index = draft.data.findIndex(
-                  (book: IBook) => book._id === "it's-101-101"
-                );
-                draft.meta.total++;
-                draft.data.splice(
-                  index,
-                  1,
-                  {
-                    ...arg,
-                    _id: data.data._id,
-                  },
-                  ...draft.data.slice(index + 1)
-                );
-              }
-            )
+            apiSlice.util.updateQueryData("getBooks", {}, (draft) => {
+              const index = draft.data.findIndex(
+                (book: IBook) => book._id === "it's-101-101"
+              );
+
+              draft.data.splice(
+                index,
+                1,
+                {
+                  ...arg,
+                  _id: data.data.data._id,
+                },
+                ...draft.data.slice(index + 1)
+              );
+            })
           );
-          console.log("🚀 ~ onQueryStarted ~ data:", data);
         } catch (error) {
           console.log("🚀 ~ onQueryStarted ~ error:", error);
           patchResult.undo();
