@@ -1,11 +1,18 @@
+import { useDeleteBookMutation } from "@/features/api/apiSlice";
 import type { IBook } from "@/interfaces/book.interface";
 import { cn } from "@/lib/utils";
 import { FaBook } from "react-icons/fa";
 
 export default function Book({ data }: { data: IBook }) {
-  const { author, available, copies, genre, isbn, title, description } = data;
+  const { _id, author, available, copies, genre, isbn, title, description } =
+    data;
 
-  console.log("🚀 ~ Book ~ data:", data);
+  const [deleteBook] = useDeleteBookMutation();
+
+  const onDeleteBook = () => {
+    deleteBook(_id);
+  };
+
   return (
     <div className="p-12 md:w-1/2 flex flex-col items-start">
       {/* Availability status */}
@@ -60,7 +67,8 @@ export default function Book({ data }: { data: IBook }) {
           </button>
           <button
             type="button"
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-red-800"
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-red-800 cursor-pointer"
+            onClick={onDeleteBook}
           >
             Delete
           </button>

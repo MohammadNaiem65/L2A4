@@ -67,6 +67,32 @@ const apiSlice = createApi({
         }
       },
     }),
+    deleteBook: builder.mutation({
+      query: (id) => ({
+        url: `/books/${id}`,
+        method: "DELETE",
+      }),
+
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const cacheKey = { page: 1 };
+
+        const patchResult = dispatch(
+          apiSlice.util.updateQueryData("getBooks", cacheKey, (draft) => {
+            const index = draft.data.findIndex(
+              (book: IBook) => book._id === arg
+            );
+            draft.data.splice(index, 1);
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.log("🚀 ~ onQueryStarted ~ error:", error);
+          patchResult.undo();
+        }
+      },
+    }),
     getBorrowedBooksSummary: builder.query({
       query: () => "/borrow",
     }),
@@ -76,6 +102,7 @@ const apiSlice = createApi({
 export default apiSlice;
 export const {
   useGetBooksQuery,
-  useGetBorrowedBooksSummaryQuery,
   usePostBookMutation,
+  useDeleteBookMutation,
+  useGetBorrowedBooksSummaryQuery,
 } = apiSlice;
