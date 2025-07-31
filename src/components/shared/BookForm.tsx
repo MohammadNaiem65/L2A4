@@ -14,7 +14,8 @@ import { cn } from '@/lib/utils';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { Form } from 'react-router';
 
-type FormValues = Omit<IBook, '_id' | 'available'>;
+export type FormValues = Omit<IBook, '_id' | 'available'> &
+    Partial<Pick<IBook, '_id' | 'available'>>;
 
 const GENRE = [
     'FICTION',
@@ -27,15 +28,18 @@ const GENRE = [
 
 type PropsType = {
     handleSubmitForm: (data: FormValues) => void;
+    initialData?: IBook;
 };
 
-export default function BookForm({ handleSubmitForm }: PropsType) {
+export default function BookForm({ handleSubmitForm, initialData }: PropsType) {
     const {
         register,
         handleSubmit,
         formState: { errors },
         control,
-    } = useForm<FormValues>();
+    } = useForm<FormValues>({
+        defaultValues: initialData,
+    });
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         handleSubmitForm(data);
@@ -146,12 +150,12 @@ export default function BookForm({ handleSubmitForm }: PropsType) {
                 <Controller
                     name='genre'
                     control={control}
-                    defaultValue={GENRE[0]}
+                    defaultValue={initialData?.genre || GENRE[0]}
                     rules={{ required: 'Genre is required' }}
                     render={({ field }) => (
                         <Select
                             onValueChange={field.onChange}
-                            defaultValue={GENRE[0]}
+                            defaultValue={initialData?.genre || GENRE[0]}
                             value={field.value}
                         >
                             <SelectTrigger

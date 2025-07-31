@@ -1,5 +1,5 @@
-import type { IBook } from '@/interfaces/book.interface';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { type IBook } from './../../interfaces/book.interface';
 
 const apiSlice = createApi({
     reducerPath: 'api',
@@ -34,6 +34,11 @@ const apiSlice = createApi({
                     url: `/books?${searchParams.toString()}`,
                 };
             },
+        }),
+        getBook: builder.query({
+            query: (id) => ({
+                url: `/books/${id}`,
+            }),
         }),
         postBook: builder.mutation({
             query: (data) => ({
@@ -85,6 +90,45 @@ const apiSlice = createApi({
                             }
                         )
                     );
+                } catch (error) {
+                    console.log('🚀 ~ onQueryStarted ~ error:', error);
+                    patchResult.undo();
+                }
+            },
+        }),
+        updateBook: builder.mutation({
+            query: (data) => ({
+                url: `/books/${data._id}`,
+                method: 'PUT',
+                body: data,
+            }),
+
+            async onQueryStarted(arg: IBook, { queryFulfilled, dispatch }) {
+                const cacheKey = { page: 1 };
+
+                const patchResult = dispatch(
+                    apiSlice.util.updateQueryData(
+                        'getBooks',
+                        cacheKey,
+                        (draft) => {
+                            const index = draft.data.findIndex(
+                                (book: IBook) => book._id === arg._id
+                            );
+
+                            draft.data.splice(
+                                index,
+                                1,
+                                {
+                                    ...arg,
+                                },
+                                ...draft.data.slice(index + 1)
+                            );
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
                 } catch (error) {
                     console.log('🚀 ~ onQueryStarted ~ error:', error);
                     patchResult.undo();
@@ -169,7 +213,9 @@ const apiSlice = createApi({
 export default apiSlice;
 export const {
     useGetBooksQuery,
+    useGetBookQuery,
     usePostBookMutation,
+    useUpdateBookMutation,
     useDeleteBookMutation,
     useBorrowBookMutation,
     useGetBorrowedBooksSummaryQuery,

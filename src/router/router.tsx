@@ -1,8 +1,9 @@
-import { postBookAction } from '@/actions/bookActions';
+import { postBookAction, updateBookAction } from '@/actions/bookActions';
 import App from '@/App';
-import BookForm from '@/components/shared/BookForm';
+import { loadBook } from '@/loaders/bookLoaders';
 import AddBook from '@/pages/AddBook';
 import BorrowSummary from '@/pages/BorrowSummary';
+import EditBook from '@/pages/EditBook';
 import Home from '@/pages/Home';
 import { createBrowserRouter } from 'react-router';
 
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '/edit-book/:bookId',
-                Component: BookForm,
+                Component: EditBook,
+                loader: loadBook,
+                action: updateBookAction,
             },
             {
                 path: '/borrow-summary',
