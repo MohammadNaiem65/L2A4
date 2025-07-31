@@ -44,17 +44,34 @@ borrowRouter.get("/", async (req: Request, res: Response) => {
         totalQuantity: 1,
       },
     },
-    {
-      $skip: (_page >= 1 ? _page - 1 : 0) * _limit,
-    },
   ];
 
   try {
+    // Get total count before pagination
+    const total = await Borrow.aggregate([...pipeline, { $count: "count" }]);
+
+    // Add pagination stages
+    pipeline.push(
+      {
+        $skip: (_page >= 1 ? _page - 1 : 0) * _limit,
+      },
+      {
+        $limit: _limit,
+      }
+    );
+
     const response = await Borrow.aggregate(pipeline);
+
+    const meta = {
+      total: total.length > 0 ? total[0].count : 0,
+      page: _page >= 1 ? _page : 1,
+      limit: _limit,
+    };
 
     res.status(200).json({
       success: true,
       message: "Borrowed books summary retrieved successfully",
+      meta,
       data: response,
     });
   } catch (error: any) {
