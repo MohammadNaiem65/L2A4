@@ -8,15 +8,30 @@ const apiSlice = createApi({
     }),
     endpoints: (builder) => ({
         getBooks: builder.query({
-            query: (params) => {
-                const {
-                    genre = 'NON_FICTION',
-                    sortby = 'updatedAt',
-                    sort = 'desc',
-                    page = 1,
-                } = params;
+            query: ({
+                genre,
+                sortby = 'updatedAt',
+                sort = 'desc',
+                page = 1,
+            }) => {
+                const params: {
+                    genre?: string;
+                    sortby?: string;
+                    sort?: string;
+                    page?: number;
+                } = { genre, sortby, sort, page };
+                const searchParams = new URLSearchParams();
+
+                for (const key in params) {
+                    const val = params[key as keyof typeof params];
+
+                    if (val !== undefined && val !== null) {
+                        searchParams.set(key, String(val));
+                    }
+                }
+
                 return {
-                    url: `/books?filter=${genre}&sortby=${sortby}&page=${page}&sort=${sort}`,
+                    url: `/books?${searchParams.toString()}`,
                 };
             },
         }),
@@ -35,6 +50,7 @@ const apiSlice = createApi({
                         'getBooks',
                         cacheKey,
                         (draft) => {
+                            console.log(JSON.parse(JSON.stringify(draft)));
                             draft.meta.total++;
                             draft.data.pop();
                             draft.data.unshift({
