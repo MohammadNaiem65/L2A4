@@ -28,10 +28,11 @@ const apiSlice = createApi({
       }),
 
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        const patchResult = dispatch(
-          apiSlice.util.updateQueryData("getBooks", {}, (draft) => {
-            draft.meta.total++;
+        const cacheKey = { page: 1 };
 
+        const patchResult = dispatch(
+          apiSlice.util.updateQueryData("getBooks", cacheKey, (draft) => {
+            draft.meta.total++;
             draft.data.pop();
             draft.data.unshift({
               ...arg,
@@ -44,7 +45,7 @@ const apiSlice = createApi({
           const data = await queryFulfilled;
 
           dispatch(
-            apiSlice.util.updateQueryData("getBooks", {}, (draft) => {
+            apiSlice.util.updateQueryData("getBooks", cacheKey, (draft) => {
               const index = draft.data.findIndex(
                 (book: IBook) => book._id === "it's-101-101"
               );

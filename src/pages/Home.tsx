@@ -15,7 +15,7 @@ import { useSearchParams } from "react-router";
 
 export default function Home() {
   const [searchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page") || "") || undefined;
+  const currentPage = parseInt(searchParams.get("page") || "1");
   const genre = searchParams.get("genre") || undefined;
   const sortby = searchParams.get("sortby") || undefined;
   const sort = searchParams.get("sort") || undefined;
