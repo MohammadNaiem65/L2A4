@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { IBook } from '@/interfaces/book.interface';
+import type { IBook, IGenre } from '@/interfaces/book.interface';
 import { cn } from '@/lib/utils';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { Form } from 'react-router';
@@ -150,7 +150,7 @@ export default function BookForm({ handleSubmitForm, initialData }: PropsType) {
                 <Controller
                     name='genre'
                     control={control}
-                    defaultValue={initialData?.genre || GENRE[0]}
+                    defaultValue={initialData?.genre ?? (GENRE[0] as IGenre)}
                     rules={{ required: 'Genre is required' }}
                     render={({ field }) => (
                         <Select

@@ -1,11 +1,13 @@
 import { postBookAction, updateBookAction } from '@/actions/bookActions';
 import App from '@/App';
 import { loadBook } from '@/loaders/bookLoaders';
-import AddBook from '@/pages/AddBook';
-import BorrowSummary from '@/pages/BorrowSummary';
-import EditBook from '@/pages/EditBook';
-import Home from '@/pages/Home';
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router';
+
+const Home = lazy(() => import('@/pages/Home'));
+const AddBook = lazy(() => import('@/pages/AddBook'));
+const EditBook = lazy(() => import('@/pages/EditBook'));
+const BorrowSummary = lazy(() => import('@/pages/BorrowSummary'));
 
 const router = createBrowserRouter([
     {
