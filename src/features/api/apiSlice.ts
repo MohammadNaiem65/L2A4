@@ -191,6 +191,11 @@ const apiSlice = createApi({
                                 );
 
                                 draft.data[index].copies -= data.quantity;
+
+                                // Mark book as not available if all copies are borrowed
+                                if (draft.data[index].copies === 0) {
+                                    draft.data[index].available = false;
+                                }
                             }
                         )
                     );
@@ -203,7 +208,7 @@ const apiSlice = createApi({
             query: (props) => {
                 const { page } = props;
                 return {
-                    url: `/borrow?page=${page}`,
+                    url: `/borrow?page=${page}&limit=9`,
                 };
             },
         }),
