@@ -1,3 +1,4 @@
+import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
 import { Toaster } from 'react-hot-toast';
 import { Outlet } from 'react-router';
@@ -12,6 +13,8 @@ function App() {
                     <Outlet />
                 </div>
             </section>
+
+            <Footer />
 
             <Toaster />
         </div>
