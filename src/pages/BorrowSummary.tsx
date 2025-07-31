@@ -9,7 +9,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useGetBorrowedBooksSummaryQuery } from "@/features/api/apiSlice";
-import type { BorrowedBook } from "@/interfaces/borrow.interface";
+import type { IBorrowedBook } from "@/interfaces/borrow.interface";
 import { useSearchParams } from "react-router";
 
 export default function BorrowSummary() {
@@ -59,7 +59,7 @@ export default function BorrowSummary() {
   } else if (isSuccess && books?.length > 0) {
     content = (
       <>
-        {books?.map((book: BorrowedBook, index: number) => (
+        {books?.map((book: IBorrowedBook, index: number) => (
           <BorrowCard key={index} data={book} />
         ))}
 

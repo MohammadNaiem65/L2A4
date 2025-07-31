@@ -2,8 +2,15 @@ import { useDeleteBookMutation } from "@/features/api/apiSlice";
 import type { IBook } from "@/interfaces/book.interface";
 import { cn } from "@/lib/utils";
 import { FaBook } from "react-icons/fa";
+import { AlertDialogTrigger } from "../ui/alert-dialog";
 
-export default function Book({ data }: { data: IBook }) {
+export default function Book({
+  data,
+  handleSelectBook,
+}: {
+  data: IBook;
+  handleSelectBook: (_id: string) => void;
+}) {
   const { _id, author, available, copies, genre, isbn, title, description } =
     data;
 
@@ -51,23 +58,21 @@ export default function Book({ data }: { data: IBook }) {
           </span>
         </div>
 
-        <div className="space-x-3">
-          <button
-            type="button"
-            disabled={!available}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 cursor-pointer dark:bg-blue-600 disabled:bg-blue-800 focus:outline-none"
-          >
-            Borrow
-          </button>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
-          >
+        <div className="space-x-3 flex items-center">
+          <AlertDialogTrigger asChild>
+            <button
+              disabled={!available}
+              onClick={() => handleSelectBook(_id)}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 cursor-pointer dark:bg-blue-600 disabled:bg-blue-800 focus:outline-none"
+            >
+              Borrow
+            </button>
+          </AlertDialogTrigger>
+          <button className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5">
             Edit
           </button>
           <button
-            type="button"
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-red-800 cursor-pointer"
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  disabled:bg-red-800 cursor-pointer"
             onClick={onDeleteBook}
           >
             Delete

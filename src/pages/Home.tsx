@@ -1,4 +1,4 @@
-import Book from "@/components/home/Book";
+import Books from "@/components/home/books/Books";
 import Header from "@/components/home/header/Header";
 import BookLoader from "@/components/loaders/BookLoader";
 import {
@@ -10,7 +10,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useGetBooksQuery } from "@/features/api/apiSlice";
-import type { IBook } from "@/interfaces/book.interface";
 import { useSearchParams } from "react-router";
 
 export default function Home() {
@@ -20,12 +19,14 @@ export default function Home() {
   const sortby = searchParams.get("sortby") || undefined;
   const sort = searchParams.get("sort") || undefined;
 
-  const { data, isLoading, isSuccess, isError } = useGetBooksQuery({
+  const params = {
     genre,
     sortby,
     sort,
     page: currentPage,
-  });
+  };
+
+  const { data, isLoading, isSuccess, isError } = useGetBooksQuery(params);
 
   const { data: books, meta } = data || {};
 
@@ -68,9 +69,7 @@ export default function Home() {
   } else if (isSuccess && books?.length > 0) {
     content = (
       <>
-        {books?.map((book: IBook, index: number) => (
-          <Book key={index} data={book} />
-        ))}
+        <Books books={books} searchParams={params} />
 
         <Pagination>
           <PaginationContent>
