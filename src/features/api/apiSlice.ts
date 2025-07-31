@@ -4,7 +4,7 @@ import { type IBook } from './../../interfaces/book.interface';
 const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3000/api',
+        baseUrl: 'https://l2a3-sepia.vercel.app/api',
     }),
     endpoints: (builder) => ({
         getBooks: builder.query({
@@ -15,11 +15,11 @@ const apiSlice = createApi({
                 page = 1,
             }) => {
                 const params: {
-                    genre?: string;
+                    filter?: string;
                     sortby?: string;
                     sort?: string;
                     page?: number;
-                } = { genre, sortby, sort, page };
+                } = { filter: genre, sortby, sort, page };
                 const searchParams = new URLSearchParams();
 
                 for (const key in params) {
