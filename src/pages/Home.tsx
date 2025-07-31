@@ -15,13 +15,15 @@ import { useSearchParams } from "react-router";
 
 export default function Home() {
   const [searchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page") || "1");
+  const currentPage = parseInt(searchParams.get("page") || "") || undefined;
   const genre = searchParams.get("genre") || undefined;
   const sortby = searchParams.get("sortby") || undefined;
+  const sort = searchParams.get("sort") || undefined;
 
   const { data, isLoading, isSuccess, isError } = useGetBooksQuery({
     genre,
     sortby,
+    sort,
     page: currentPage,
   });
 

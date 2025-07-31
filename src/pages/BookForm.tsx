@@ -128,6 +128,7 @@ export default function BookForm() {
         <Controller
           name="genre"
           control={control}
+          defaultValue={GENRE[0]}
           rules={{ required: "Genre is required" }}
           render={({ field }) => (
             <Select

@@ -12,10 +12,11 @@ const apiSlice = createApi({
         const {
           genre = "NON_FICTION",
           sortby = "updatedAt",
+          sort = "desc",
           page = 1,
         } = params;
         return {
-          url: `/books?filter=${genre}&sortby=${sortby}&page=${page}`,
+          url: `/books?filter=${genre}&sortby=${sortby}&page=${page}&sort=${sort}`,
         };
       },
     }),
